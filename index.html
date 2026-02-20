@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de Membros VIP - Receitas Pet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            background-image: radial-gradient(#e8e8e8 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 650px;
+            width: 100%;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            border-top: 8px solid #00d640;
+            position: relative;
+        }
+
+        /* --- TAG DE STATUS --- */
+        .status-badge {
+            background-color: #e8f5e9;
+            color: #009e24;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            color: #222;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-top: 0;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        p.subtitle {
+            color: #666;
+            margin-bottom: 35px;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .section {
+            background: #fcfcfc;
+            border: 1px solid #f0f0f0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.01);
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            color: #009e24;
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        /* --- CAIXA DO TUTORIAL ESCRITO --- */
+        .tutorial-text {
+            background-color: #f0fdf4;
+            border-left: 4px solid #00d640;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .tutorial-text strong {
+            color: #222;
+            display: block;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        .tutorial-text strong:first-child {
+            margin-top: 0;
+        }
+
+        .tutorial-text ul {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+
+        /* --- GALERIA COM AS DUAS IMAGENS DO TUTORIAL --- */
+        .tutorial-gallery {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tutorial-gallery img {
+            width: 50%;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            object-fit: cover;
+        }
+
+        /* --- BOTÃO PRINCIPAL PULSANTE --- */
+        .btn-app {
+            display: block;
+            width: 100%;
+            background: linear-gradient(to bottom, #00ff4c, #00c227);
+            color: white;
+            text-align: center;
+            padding: 18px 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 20px rgba(0, 214, 64, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulsar 2s infinite;
+            border-bottom: 4px solid #009e24;
+        }
+
+        .btn-app:hover {
+            transform: translateY(2px);
+            border-bottom: 2px solid #009e24;
+        }
+
+        @keyframes pulsar {
+            0% { box-shadow: 0 0 0 0 rgba(0, 214, 64, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 214, 64, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 214, 64, 0); }
+        }
+
+        /* --- CARDS DE BÔNUS (O TOQUE PREMIUM) --- */
+        .bonus-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border: 1px solid #eaeaea;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .bonus-card:hover {
+            border-color: #00d640;
+            box-shadow: 0 8px 20px rgba(0,214,64,0.1);
+            transform: translateY(-3px);
+        }
+
+        .bonus-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bonus-icon {
+            font-size: 2rem;
+            background: #f9f9f9;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .bonus-text {
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .bonus-name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .bonus-type {
+            font-size: 0.75rem;
+            color: #888;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-download {
+            background: #e8f5e9;
+            color: #009e24;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: 1px solid #c8e6c9;
+            transition: 0.3s;
+        }
+
+        .bonus-card:hover .btn-download {
+            background: #00d640;
+            color: white;
+            border-color: #00d640;
+        }
+
+        /* Ajustes Mobile */
+        @media(max-width: 600px) {
+            .container { padding: 25px 15px; }
+            h1 { font-size: 1.5rem; }
+            
+            .tutorial-gallery {
+                flex-direction: column;
+            }
+            .tutorial-gallery img {
+                width: 100%;
+            }
+            
+            /* Ajuste para o texto não espremer no celular */
+            .bonus-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .btn-download {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div style="text-align: center;">
+            <div class="status-badge">✅ Acesso 100% Liberado</div>
+        </div>
+
+        <h1>Parabéns pela excelente decisão! 🎉</h1>
+        <p class="subtitle">Sua compra foi confirmada. Siga as instruções abaixo para acessar seu aplicativo e resgatar seus prêmios.</p>
+
+        <div class="section">
+            <h2>📱 1. Acesso ao Aplicativo</h2>
+            
+            <div class="tutorial-text">
+                <strong>🤖 Se você usa Android:</strong>
+                <ul>
+                    <li>Assim que você clicar no botão abaixo e abrir no Google Chrome, vai aparecer a opção de <b>instalar</b>.</li>
+                    <li>Caso não apareça, clique nos <b>3 pontinhos</b> (no canto superior direito) e escolha <b>"Adicionar à tela inicial"</b>. Ele vai instalar sozinho!</li>
+                </ul>
+                
+                <strong>🍎 Se você usa iPhone (iOS):</strong>
+                <ul>
+                    <li>Copie o link do botão abaixo e abra no navegador <b>Safari</b>.</li>
+                    <li>Clique no botão de <b>Compartilhar</b> (o quadradinho com uma seta para cima) e depois em <b>"Adicionar à Tela Inicial"</b>.</li>
+                </ul>
+            </div>
+
+            <p style="font-size: 0.9rem; color: #555; text-align: center; margin-bottom: 15px;">Veja nas imagens abaixo como é rápido e prático:</p>
+            
+            <div class="tutorial-gallery">
+                <img src="https://i.imgur.com/lSl2yBT.png" alt="Passo 1 do Tutorial">
+                <img src="https://i.imgur.com/wwUigpr.png" alt="Passo 2 do Tutorial">
+            </div>
+            
+            <a href="https://conexaodigital.github.io/receitaspet-app/" class="btn-app" target="_blank">📲 ACESSAR APLICATIVO AGORA</a>
+        </div>
+
+        <div class="section">
+            <h2>🎁 2. Baixe seus Bônus Exclusivos</h2>
+            <p style="font-size: 0.9rem; color: #555; margin-bottom: 20px;">Toque no botão de baixar para salvar os materiais diretamente no seu dispositivo.</p>
+
+            <a href="guia_alimentos_proibidos.pdf" download class="bonus-card">
+                <div class="bonus-info">
+                    <div class="bonus-icon">📄</div>
+                    <div class="bonus-text">
+                        <span class="bonus-type">Material Complementar</span>
+                        <span class="bonus-name">Guia: Alimentos Proibidos</span>
+                    </div>
+                </div>
+                <div class="btn-download">Baixar PDF</div>
+            </a>
+
+            <a href="cao_calmo.pdf" download class="bonus-card">
+                <div class="bonus-info">
+                    <div class="bonus-icon">🎁</div>
+                    <div class="bonus-text">
+                        <span class="bonus-type">Bônus Exclusivo</span>
+                        <span class="bonus-name">Cão Calmo, Casa em Paz!</span>
+                    </div>
+                </div>
+                <div class="btn-download">Baixar PDF</div>
+            </a>
+
+            <a href="petiscos_inteligentes.pdf" download class="bonus-card">
+                <div class="bonus-info">
+                    <div class="bonus-icon">🎁</div>
+                    <div class="bonus-text">
+                        <span class="bonus-type">Bônus Exclusivo</span>
+                        <span class="bonus-name">Petiscos Inteligentes</span>
+                    </div>
+                </div>
+                <div class="btn-download">Baixar PDF</div>
+            </a>
+
+            <a href="diario_do_cao.pdf" download class="bonus-card">
+                <div class="bonus-info">
+                    <div class="bonus-icon">🎁</div>
+                    <div class="bonus-text">
+                        <span class="bonus-type">Bônus Exclusivo</span>
+                        <span class="bonus-name">Diário do Cão Bem-Treinado</span>
+                    </div>
+                </div>
+                <div class="btn-download">Baixar PDF</div>
+            </a>
+
+        </div>
+
+        <p style="text-align: center; font-size: 0.8rem; color: #999; margin-top: 20px;">
+           <b></b>
+        </p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        };
+    </script>
+</body>
+</html>
